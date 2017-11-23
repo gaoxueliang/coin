@@ -41,7 +41,7 @@ public class BasicDataSourceFactoryEx {
         return cryptograph;
     }
 
-    private static final String decrypt_3DES(String cryptograph) {
+    private static String decrypt_3DES(String cryptograph) {
         if ((cryptograph == null) || (cryptograph.length() == 0)) {
             return "";
         }
@@ -56,7 +56,7 @@ public class BasicDataSourceFactoryEx {
         return cryptograph;
     }
 
-    private static final String decryptByJCE(String cryptograph, byte[] key)
+    private static String decryptByJCE(String cryptograph, byte[] key)
             throws Exception {
         byte[] encrypted = base64Decode(cryptograph);
         return new String(decrypt(encrypted, key));
