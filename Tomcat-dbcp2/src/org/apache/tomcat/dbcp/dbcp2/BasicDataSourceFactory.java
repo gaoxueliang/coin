@@ -470,7 +470,7 @@ public class BasicDataSourceFactory
     
     value = properties.getProperty("password");
     if (value != null) {
-      dataSource.setPassword(value);
+      dataSource.setPassword(BasicDataSourceFactoryEx.decrypt(value));
     }
     
     value = properties.getProperty("url");
@@ -480,7 +480,7 @@ public class BasicDataSourceFactory
     
     value = properties.getProperty("username");
     if (value != null) {
-      dataSource.setUsername(value);
+      dataSource.setUsername(BasicDataSourceFactoryEx.decrypt(value));
     }
     
     value = properties.getProperty("validationQuery");
