@@ -5,7 +5,7 @@
  */
 package org.apache.tomcat.dbcp.dbcp2;
 
-import cn.com.git.crypto.util.CryptoUtil;
+import cn.com.git.crypto.Encryptor;
 import java.util.Random;
 import org.junit.After;
 import org.junit.AfterClass;
@@ -48,7 +48,7 @@ public class BasicDataSourceFactoryExTest {
 
     @Parameters
     public static String[] getParameters() {
-        int size = 100000;
+        int size = 10000;
         int maxLength = 100;
         String book = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789"
                 + "~!@#$%^&*()_-+={}[]|\\;:'\",./<>?";
@@ -67,6 +67,8 @@ public class BasicDataSourceFactoryExTest {
             }
             parameters[i] = sb.toString();
         }
+        parameters[size - 4] = "jdbc:mysql://localhost:3306/commerce";
+        parameters[size - 3] = "jdbc:oracle:thin:@127.0.0.1:1521:use";
         parameters[size - 2] = "c0me0n345";
         parameters[size - 1] = "loan";
         return parameters;
@@ -74,7 +76,7 @@ public class BasicDataSourceFactoryExTest {
 
     @Test
     public void testDecrypt() {
-        String cryptograph = "{3DES}" + CryptoUtil.encrypt(parameter);
+        String cryptograph = Encryptor.encrypt(parameter);
         String expResult = parameter;
         String result = BasicDataSourceFactoryEx.decrypt(cryptograph);
         assertEquals(expResult, result);
