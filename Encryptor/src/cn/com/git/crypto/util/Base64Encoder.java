@@ -28,17 +28,12 @@ public class Base64Encoder {
     }
 
     public String encode(byte[] input) {
-        StringBuffer result = new StringBuffer();
-        int outputCharCount = 0;
+        StringBuilder result = new StringBuilder();
         for (int i = 0; i < input.length; i += 3) {
             int remaining = Math.min(3, input.length - i);
             int oneBigNumber = (input[i] & 0xFF) << 16 | (remaining <= 1 ? 0 : input[(i + 1)] & 0xFF) << 8 | (remaining <= 2 ? 0 : input[(i + 2)] & 0xFF);
             for (int j = 0; j < 4; j++) {
                 result.append(remaining + 1 > j ? SIXTY_FOUR_CHARS[(0x3F & oneBigNumber >> 6 * (3 - j))] : '=');
-            }
-            outputCharCount += 4;
-            if (outputCharCount % 76 == 0) {
-                result.append('\n');
             }
         }
         return result.toString();
