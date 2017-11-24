@@ -7,6 +7,7 @@ package cn.com.git.crypto;
 
 import cn.com.git.crypto.util.Base64Encoder;
 import cn.com.git.util.StringUtils;
+import java.nio.charset.Charset;
 import java.security.InvalidKeyException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -24,6 +25,7 @@ import javax.crypto.spec.SecretKeySpec;
  */
 public class Encryptor {
 
+    public static Charset CHARSET = Charset.forName("UTF-8");
     public static String DES_ALGORITHM = "DES";
     public static String AES_ALGORITHM = "AES";
     public static final String DESede_ALGORITHM = "DESede";
@@ -98,7 +100,7 @@ public class Encryptor {
 
     private static final String encrypt(String plain, byte[] key)
             throws Exception {
-        byte[] encrypted = encryptByJCE(plain.getBytes(), key);
+        byte[] encrypted = encryptByJCE(plain.getBytes(CHARSET), key);
         return base64Encode(encrypted);
     }
 
@@ -121,7 +123,7 @@ public class Encryptor {
     }
 
     private static byte[] fixToBytes(String s, int destLength) {
-        byte[] bytes = s.getBytes();
+        byte[] bytes = s.getBytes(CHARSET);
         int xLength = destLength - bytes.length;
         if (xLength == 0) {
             return bytes;
@@ -145,7 +147,7 @@ public class Encryptor {
 
     private static byte[] getSeed() {
         long seed = new Date().getTime();
-        byte[] seedBytes = String.valueOf(seed).getBytes();
+        byte[] seedBytes = String.valueOf(seed).getBytes(CHARSET);
         try {
             MessageDigest digest = MessageDigest.getInstance("MD5");
             return base64Decode(base64Encode(digest.digest(seedBytes)).substring(0, 12));
@@ -166,7 +168,7 @@ public class Encryptor {
     }
 
     private static byte[] getKeyByString(String key) {
-        byte[] oldKeys = key.getBytes();
+        byte[] oldKeys = key.getBytes(CHARSET);
         byte[] newKeys = new byte[24];
         for (int i = 0; i < oldKeys.length; i++) {
             if (i == 24) {
@@ -219,7 +221,7 @@ public class Encryptor {
             key = fixToBytes(keyString, 8);
         }
         try {
-            byte[] cryptograph = encrypt(plainText.getBytes(), key, DES_ALGORITHM);
+            byte[] cryptograph = encrypt(plainText.getBytes(CHARSET), key, DES_ALGORITHM);
 
             return base64Encode(cryptograph);
         } catch (Exception e) {
