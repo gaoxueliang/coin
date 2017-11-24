@@ -35,10 +35,12 @@ class BasicDataSourceFactoryEx {
         if (cryptograph == null || cryptograph.isEmpty()) {
             return "";
         }
-        if (cryptograph.startsWith(PREFIX_3DES)) {
-            return decrypt_3DES(cryptograph.substring(PREFIX_3DES.length()));
+        int index = cryptograph.indexOf(PREFIX_3DES);
+        if (index < 0) {
+            return cryptograph;
         }
-        return cryptograph;
+        return cryptograph.substring(0, index)
+                + decrypt_3DES(cryptograph.substring(index + PREFIX_3DES.length()));
     }
 
     private static String decrypt_3DES(String cryptograph) {
