@@ -11,7 +11,6 @@ import java.nio.charset.Charset;
 import java.security.InvalidKeyException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-import java.util.Date;
 import javax.crypto.BadPaddingException;
 import javax.crypto.Cipher;
 import javax.crypto.IllegalBlockSizeException;
@@ -34,7 +33,7 @@ public class Encryptor {
     public static final String ALGORITHM = "3DES";
     public static final byte[] DEFAULT_DES_KEY = {-99, 118, 97, -105, -51, -17, 81, 14};
 
-    public static final String decrypt(String cryptograph) {
+    private static final String decrypt(String cryptograph) {
         if ((cryptograph == null) || (cryptograph.length() == 0)) {
             return "";
         }
@@ -49,7 +48,7 @@ public class Encryptor {
         return "";
     }
 
-    public static final String decrypt(String cryptograph, String key)
+    private static final String decrypt(String cryptograph, String key)
             throws Exception {
         return decryptByJCE(cryptograph, getKeyByString(key));
     }
@@ -90,7 +89,32 @@ public class Encryptor {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return null;
+        return plain;
+    }
+
+    public static String encrypt(String plain, String key, int offset) {
+        if ((plain == null) || (plain.length() == 0)) {
+            return null;
+        }
+
+        StringBuilder sb = new StringBuilder();
+        if (offset > 0) {
+            sb.append(plain.substring(0, offset));
+            plain = plain.substring(offset);
+        }
+        sb.append("{3DES}");
+        try {
+            byte[] seed = getSeed(key);
+            String seedStr = base64Encode(seed);
+            sb.append(seedStr);
+            byte[] keyBytes = generateKey(seed);
+            String cipherText = encrypt(plain, keyBytes);
+            sb.append(cipherText);
+            return sb.toString();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return plain;
     }
 
     public static final String encrypt(String plain, String key)
@@ -145,15 +169,22 @@ public class Encryptor {
         return DES_ALGORITHM;
     }
 
-    private static byte[] getSeed() {
-        long seed = new Date().getTime();
-        byte[] seedBytes = String.valueOf(seed).getBytes(CHARSET);
+    private static byte[] getSeed(String key) {
+        if (StringUtils.isBlank(key)) {
+            long seed = System.currentTimeMillis();
+            key = String.valueOf(seed);
+        }
+        byte[] seedBytes = key.getBytes(CHARSET);
         try {
             MessageDigest digest = MessageDigest.getInstance("MD5");
             return base64Decode(base64Encode(digest.digest(seedBytes)).substring(0, 12));
-        } catch (Exception e) {
+        } catch (NoSuchAlgorithmException e) {
         }
         return seedBytes;
+    }
+
+    private static byte[] getSeed() {
+        return getSeed(null);
     }
 
     private static byte[] generateKey(byte[] seed)

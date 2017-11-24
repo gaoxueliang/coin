@@ -25,7 +25,7 @@ import javax.crypto.spec.SecretKeySpec;
  *
  * @author git
  */
-public final class CryptoUtil {
+ final class CryptoUtil {
 
     public static Charset CHARSET = Charset.forName("UTF-8");
     public static String DES_ALGORITHM = "DES";
