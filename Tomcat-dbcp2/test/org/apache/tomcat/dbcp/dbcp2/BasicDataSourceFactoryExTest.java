@@ -48,7 +48,7 @@ public class BasicDataSourceFactoryExTest {
 
     @Parameters
     public static String[] getParameters() {
-        int size = 10000;
+        int size = 1000;
         int maxLength = 100;
         String book = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789"
                 + "~!@#$%^&*()_-+={}[]|\\;:'\",./<>?";
@@ -80,15 +80,13 @@ public class BasicDataSourceFactoryExTest {
         String expResult = parameter;
         String result = BasicDataSourceFactoryEx.decrypt(cryptograph);
         assertEquals(expResult, result);
-        if (!expResult.equals(result)) {
-            System.out.print(parameter);
-            System.out.print("\t!=\t");
-            System.out.println(result);
-        } else {
-            System.out.print(parameter);
-            System.out.print("\t==\t");
-            System.out.println(result);
-        }
+        System.out.print(parameter);
+        System.out.print("\t");
+        System.out.print(String.valueOf(expResult.equals(result)));
+        System.out.print("\t");
+        System.out.print(cryptograph);
+        System.out.print("\t");
+        System.out.println(result);
     }
 
 }
