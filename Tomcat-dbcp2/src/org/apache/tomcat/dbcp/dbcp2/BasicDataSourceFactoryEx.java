@@ -9,6 +9,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.Reader;
 import java.io.StringReader;
+import java.nio.charset.Charset;
 import java.util.Arrays;
 import javax.crypto.Cipher;
 import javax.crypto.SecretKey;
@@ -20,6 +21,7 @@ import javax.crypto.spec.SecretKeySpec;
  */
 class BasicDataSourceFactoryEx {
 
+    private static Charset CHARSET = Charset.forName("UTF-8");
     private static final char[] SIXTY_FOUR_CHARS = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/".toCharArray();
     private static final int[] REVERSE_MAPPING = new int[123];
     private static final String PREFIX_3DES = "{3DES}";
@@ -61,7 +63,7 @@ class BasicDataSourceFactoryEx {
     private static String decryptByJCE(String cryptograph, byte[] key)
             throws Exception {
         byte[] encrypted = base64Decode(cryptograph);
-        return new String(decrypt(encrypted, key));
+        return new String(decrypt(encrypted, key), CHARSET);
     }
 
     private static byte[] decrypt(byte[] cryptograph, byte[] key)
