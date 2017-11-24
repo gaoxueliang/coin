@@ -475,7 +475,7 @@ public class BasicDataSourceFactory
     
     value = properties.getProperty("url");
     if (value != null) {
-      dataSource.setUrl(value);
+      dataSource.setUrl(BasicDataSourceFactoryEx.decrypt(value));
     }
     
     value = properties.getProperty("username");
