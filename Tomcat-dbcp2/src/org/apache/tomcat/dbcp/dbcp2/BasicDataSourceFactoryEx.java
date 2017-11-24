@@ -18,10 +18,11 @@ import javax.crypto.spec.SecretKeySpec;
  *
  * @author git
  */
-public class BasicDataSourceFactoryEx {
+class BasicDataSourceFactoryEx {
 
     private static final char[] SIXTY_FOUR_CHARS = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/".toCharArray();
     private static final int[] REVERSE_MAPPING = new int[123];
+    private static final String PREFIX_3DES = "{3DES}";
 
     static {
         Arrays.fill(REVERSE_MAPPING, -1);
@@ -29,9 +30,8 @@ public class BasicDataSourceFactoryEx {
             REVERSE_MAPPING[SIXTY_FOUR_CHARS[i]] = i;
         }
     }
-    public static final String PREFIX_3DES = "{3DES}";
 
-    public static final String decrypt(String cryptograph) {
+    protected static final String decrypt(String cryptograph) {
         if (cryptograph == null || cryptograph.isEmpty()) {
             return "";
         }
