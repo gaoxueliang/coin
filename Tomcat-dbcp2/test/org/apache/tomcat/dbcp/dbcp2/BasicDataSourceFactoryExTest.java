@@ -49,8 +49,7 @@ public class BasicDataSourceFactoryExTest {
     @Parameters
     public static String[] getParameters() {
         int size = 100000;
-        // 最大长度是55位密码
-        int maxLength = 55;
+        int maxLength = 100;
         String book = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789"
                 + "~!@#$%^&*()_-+={}[]|\\;:'\",./<>?";
         int bookLength = book.length();
