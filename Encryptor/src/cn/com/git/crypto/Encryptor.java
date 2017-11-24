@@ -85,7 +85,7 @@ public class Encryptor {
             byte[] seed = getSeed();
             String seedStr = base64Encode(seed);
             byte[] key = generateKey(seed);
-            return seedStr + encrypt(plain, key);
+            return "{3DES}" + seedStr + encrypt(plain, key);
         } catch (Exception e) {
             e.printStackTrace();
         }
