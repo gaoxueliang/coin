@@ -7,6 +7,7 @@ package cn.com.git.crypto.util;
 
 import cn.com.git.util.StringUtils;
 import java.io.IOException;
+import java.nio.charset.Charset;
 import java.security.InvalidKeyException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -26,6 +27,7 @@ import javax.crypto.spec.SecretKeySpec;
  */
 public final class CryptoUtil {
 
+    public static Charset CHARSET = Charset.forName("UTF-8");
     public static String DES_ALGORITHM = "DES";
     public static String AES_ALGORITHM = "AES";
     public static final String DESede_ALGORITHM = "DESede";
@@ -106,7 +108,7 @@ public final class CryptoUtil {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return null;
+        return plain;
     }
 
     public static final String encrypt(String plain, String key)
@@ -114,9 +116,9 @@ public final class CryptoUtil {
         return encrypt(plain, getKeyByString(key));
     }
 
-    private static final String encrypt(String plain, byte[] key)
+    private static String encrypt(String plain, byte[] key)
             throws Exception {
-        byte[] encrypted = encryptByJCE(plain.getBytes(), key);
+        byte[] encrypted = encryptByJCE(plain.getBytes(CHARSET), key);
         return base64Encode(encrypted);
     }
 
@@ -175,7 +177,7 @@ public final class CryptoUtil {
 
     private static byte[] getSeed() {
         long seed = new Date().getTime();
-        byte[] seedBytes = String.valueOf(seed).getBytes();
+        byte[] seedBytes = String.valueOf(seed).getBytes(CHARSET);
         try {
             MessageDigest digest = MessageDigest.getInstance("MD5");
             return base64Decode(base64Encode(digest.digest(seedBytes)).substring(0, 12));
@@ -196,7 +198,7 @@ public final class CryptoUtil {
     }
 
     private static byte[] getKeyByString(String key) {
-        byte[] oldKeys = key.getBytes();
+        byte[] oldKeys = key.getBytes(CHARSET);
         byte[] newKeys = new byte[24];
         for (int i = 0; i < oldKeys.length; i++) {
             if (i == 24) {
