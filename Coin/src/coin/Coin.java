@@ -9,11 +9,11 @@ package coin;
  *
  * @author git
  */
-public class Coin {
+public final class Coin {
 
-    private int star;
-    private int value;
-    private int criticalRate;
+    private final int star;
+    private final int value;
+    private final int criticalRate;
 
     public Coin(int star, int value, int successRate) {
         this.star = star;
@@ -25,24 +25,12 @@ public class Coin {
         return star;
     }
 
-    public void setStar(int star) {
-        this.star = star;
-    }
-
     public int getValue() {
         return value;
     }
 
-    public void setValue(int value) {
-        this.value = value;
-    }
-
     public int getCriticalRate() {
         return criticalRate;
-    }
-
-    public void setCriticalRate(int criticalRate) {
-        this.criticalRate = criticalRate;
     }
 
     @Override

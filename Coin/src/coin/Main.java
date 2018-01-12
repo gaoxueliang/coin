@@ -5,7 +5,9 @@
  */
 package coin;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 
 /**
  *
@@ -14,14 +16,14 @@ import java.util.Arrays;
 public class Main {
 
     private static int[] coinBaseValues = {
-        30,
-        50,
+        //        30,
+        //        50,
         100,
         180,
         330,
         600,};
     private static int[] armValues = {
-        100,
+        //        100,
         800,
         2900,
         7900,
@@ -29,6 +31,9 @@ public class Main {
     };
 
     private static Coin[] coins = new Coin[coinBaseValues.length * 3];
+
+    private static transient ArrayList<CountEntry> resultList = new ArrayList<>();
+    private static transient ArrayList<CountEntry> workingList = new ArrayList<>();
 
     static {
         int starStart = 7 - coinBaseValues.length;
@@ -63,6 +68,18 @@ public class Main {
             }
 
         }
+        Collections.sort(resultList);
+        for (CountEntry countEntry : resultList) {
+            System.out.println(countEntry.toString());
+        }
+    }
+
+    private static void put(CountEntry entry, Coin coin) {
+        
+    }
+
+    private static void compute(CountEntry entry, int start) {
+
     }
 
 }
